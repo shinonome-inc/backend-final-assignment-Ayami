@@ -104,9 +104,9 @@ class TestSignupView(TestCase):
         self.assertIn("This filed is required.", form.errors["password1"])
 
     def test_failure_post_with_duplicated_user(self):
-        self.user = User.objects.create_user(username="tster", password="tespassword")
+        self.user = User.objects.create_user(username="tester", password="testpassword")
         invalid_data = {
-            "username": "tster",
+            "username": "tester",
             "email": "test@test.com",
             "password1": "1234p",
             "password2": "1234p",
@@ -118,9 +118,9 @@ class TestSignupView(TestCase):
 
         self.assertTrue(User.objects.filter(username=invalid_data["username"]).exists())
         self.assertFalse(form.is_valid())
-        self.assertIn("A user with that username already exsits.", form.errors["username"])
+        self.assertIn("A user with that username already exists.", form.errors["username"])
 
-    def testfailure_post_with_invalid_email(self):
+    def test_failure_post_with_invalid_email(self):
         invalid_data = {
             "username": "testuser",
             "email": "test@test",
@@ -138,7 +138,7 @@ class TestSignupView(TestCase):
 
     def test_failure_post_with_too_short_password(self):
         invalid_data = {
-            "username": "tesuser",
+            "username": "testuser",
             "email": "test@test.com",
             "password1": "1234p",
             "password2": "1234p",
@@ -147,7 +147,7 @@ class TestSignupView(TestCase):
         form = response.context["form"]
         self.assertEqual(response.status_code, 200)
 
-        self.assertFalse(User.objects.filter(username=invalid_data["username"]).exsists())
+        self.assertFalse(User.objects.filter(username=invalid_data["username"]).exists())
         self.assertFalse(form.is_valid())
         self.assertIn("This password is too short. It must contain at least 8 characters.", form.errors["password2"])
 
@@ -181,7 +181,7 @@ class TestSignupView(TestCase):
 
         self.assertFalse(User.objects.filter(username=invalid_data["username"]).exist())
         self.assertFalse(form.is_valid())
-        self.assertIn("This password is entirely mumeric.", form.errors["password2"])
+        self.assertIn("This password is entirely numeric.", form.errors["password2"])
 
     def test_failure_post_with_mismatch_password(self):
         invalid_data = {
@@ -195,7 +195,7 @@ class TestSignupView(TestCase):
         form = response.context["form"]
         self.assertEqual(response.status_code, 200)
 
-        self.assertFalse(User.objects.filter(userneme=invalid_data["username"]).exists())
+        self.assertFalse(User.objects.filter(username=invalid_data["username"]).exists())
         self.assertFalse(form.is_valid())
         self.assertIn("The two password fields didn't match.", form.errors["password2"])
 
