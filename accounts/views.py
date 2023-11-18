@@ -11,7 +11,7 @@ class SignupView(CreateView):
     template_name = "accounts/signup.html"
     success_url = reverse_lazy("tweets:home")
 
-    def form_vaild(self, form):
+    def form_valid(self, form):
         response = super().form_valid(form)
         username = form.cleaned_data["username"]
         password = form.cleaned_data["password1"]
